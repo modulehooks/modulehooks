@@ -1,0 +1,10 @@
+[
+  ".js",
+  "/index.js",
+  ".cjs",
+  "/index.cjs",
+  ".ts",
+  "/index.ts",
+  ".cts",
+  "/index.cts"
+]

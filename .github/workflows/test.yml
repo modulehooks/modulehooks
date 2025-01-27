@@ -1,0 +1,27 @@
+name: Test Module Hooks
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Test Audit
+        run: npm audit --workspaces
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build --workspaces
+      - name: Test
+        run: npm run test
+      - name: Test Publish
+        run: npm publish --dry-run --workspaces
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
