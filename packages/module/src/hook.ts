@@ -28,7 +28,7 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
           path.join(path.dirname(context.parentURL), specifier + extension)
         )
       ).then(() => specifier += extension)
-    ));
+    )).catch(() => void 0);
   }
   return nextResolve(specifier, context);
 };
