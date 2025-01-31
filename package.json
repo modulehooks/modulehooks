@@ -1,7 +1,6 @@
 {
   "project": "NodeJS Module Customization Hooks",
   "workspaces": [
-    "packages/core",
     "packages/commonjs",
     "packages/module"
   ],

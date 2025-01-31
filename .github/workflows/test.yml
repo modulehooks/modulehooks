@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: npm run build --workspaces
       - name: Test
-        run: npm run test
+        run: npm run test --workspaces
       - name: Test Publish
         run: npm publish --dry-run --workspaces
         env:
