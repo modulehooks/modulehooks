@@ -16,19 +16,19 @@
 import fs from 'node:fs/promises';
 import type { ResolveHook } from 'node:module';
 import path from 'node:path';
+import url from 'node:url';
 
 import extensions from './json/extensions.json' with { type: 'json' };
 
 export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
   if (!path.extname(specifier) && context.conditions.includes('import')) {
-    specifier = await new Promise(resolve => {
-      let rejections = 0;
-      for (const extension of extensions) {
-        fs.access(specifier + extension)
-          .then(() => resolve(specifier + extension))
-          .catch(() => ++rejections === extensions.length && resolve(specifier))
-      }
-    });
+    await Promise.any(extensions.map(extension =>
+      fs.access(
+        url.fileURLToPath(
+          path.join(path.dirname(context.parentURL), specifier + extension)
+        )
+      ).then(() => specifier += extension)
+    ));
   }
   return nextResolve(specifier, context);
 };
